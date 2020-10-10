@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-console.log('fixing git')
 
 const theme = {
   colors: {
