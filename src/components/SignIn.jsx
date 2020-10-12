@@ -1,24 +1,31 @@
-import React from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import SignInForm from './SignInForm';
+import React from "react";
+import { Formik } from "formik";
+import * as yup from "yup";
+import SignInForm from "./SignInForm";
+
+import useSignIn from "../hooks/useSignIn";
 
 const validationSchema = yup.object().shape({
-  username: yup.string().required('username is required'),
-  password: yup.string().required('password is required'),
+  username: yup.string().required("username is required"),
+  password: yup.string().required("password is required"),
 });
 
 const initialValues = {
-  username: '',
-  password: '',
+  username: "",
+  password: "",
 };
 
 const SignIn = () => {
-  const onSubmit = (values) => {
-    const username = values.username;
-    console.log(username);
-    const password = values.password;
-    console.log(password);
+  const [signIn, data] = useSignIn();
+  console.log(data);
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+    console.log(username, password);
+    try {
+      await signIn({ username, password });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Formik
