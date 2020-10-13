@@ -1,13 +1,13 @@
-import React from 'react';
-import Constants from 'expo-constants';
-import { StyleSheet, View } from 'react-native';
-import { Route, Redirect, Switch } from 'react-router-native';
+import React from "react";
+import Constants from "expo-constants";
+import { StyleSheet, View } from "react-native";
+import { Route, Switch } from "react-router-native";
 
-import RepositoryList from './RepositoryList';
-import AppBar from './AppBar';
-import SignIn from './SignIn';
+import RepositoryList from "./RepositoryList";
+import AppBar from "./AppBar";
+import SignIn from "./SignIn";
 
-import theme from '../theme';
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   container: {
