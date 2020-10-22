@@ -1,16 +1,16 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { useField } from 'formik';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { useField } from "formik";
 
-import TextInput from './TextInput';
-import Text from './Text';
+import TextInput from "./TextInput";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
   errorText: {
     marginTop: 5,
     marginLeft: 7,
-    textAlign: 'left',
-    color: '#d73a4a',
+    textAlign: "left",
+    color: "#d73a4a",
   },
 });
 
@@ -30,5 +30,4 @@ const FormikTextInput = ({ name, ...props }) => {
     </>
   );
 };
-
 export default FormikTextInput;

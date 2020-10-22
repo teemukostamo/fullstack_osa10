@@ -1,86 +1,127 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import Text from './Text';
-
-const kFormatter = (num) => {
-  return Math.abs(num) > 999
-    ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'k'
-    : Math.sign(num) * Math.abs(num);
-};
+import React from "react";
+import { View, StyleSheet, Image } from "react-native";
+import Text from "./Text";
+import theme from "../theme";
+import formatInThousands from "../utils/formatInThousands";
 
 const styles = StyleSheet.create({
-  flexContainer: {
-    display: 'flex',
-    paddingBottom: 10,
-    backgroundColor: 'white',
-    flexDirection: 'row',
+  container: {
+    backgroundColor: "white",
+    padding: 15,
   },
-  smallImage: {
-    flexGrow: 0,
-    padding: 10,
+  topContainer: {
+    flexDirection: "row",
+    marginBottom: 15,
   },
-  flexItemB: {
-    paddingTop: 3,
+  bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  avatarContainer: {
     flexGrow: 0,
-    borderColor: 'black',
-    alignItems: 'flex-start',
+    marginRight: 20,
+  },
+  contentContainer: {
+    flexGrow: 1,
     flexShrink: 1,
   },
-  repoStats: {
-    paddingLeft: 25,
-    width: '25%',
-    justifyContent: 'center',
+  nameText: {
+    marginBottom: 5,
   },
-  repoLanguage: {
-    backgroundColor: '#0366d6',
-    color: 'white',
-    padding: 2,
-    borderRadius: 2,
+  descriptionText: {
+    flexGrow: 1,
   },
-  tinyLogo: {
-    width: 50,
-    height: 50,
+  avatar: {
+    width: 45,
+    height: 45,
+    borderRadius: theme.roundness,
+  },
+  countItem: {
+    flexGrow: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 15,
+  },
+  countItemCount: {
+    marginBottom: 5,
+  },
+  languageContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+  },
+  languageText: {
+    color: "white",
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.roundness,
+    flexGrow: 0,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
   },
 });
 
-const RepositoryItem = ({ item }) => {
+const CountItem = ({ label, count }) => {
   return (
-    <View>
-      <View style={styles.flexContainer}>
-        <View style={styles.smallImage}>
-          <Image
-            style={styles.tinyLogo}
-            source={{
-              uri: item.ownerAvatarUrl,
-            }}
-          />
+    <View style={styles.countItem}>
+      <Text
+        testID='repositoryCounts'
+        style={styles.countItemCount}
+        fontWeight='bold'
+      >
+        {formatInThousands(count)}
+      </Text>
+      <Text color='textSecondary'>{label}</Text>
+    </View>
+  );
+};
+
+const RepositoryItem = ({ repository }) => {
+  const {
+    fullName,
+    description,
+    language,
+    forksCount,
+    stargazersCount,
+    ratingAverage,
+    reviewCount,
+    ownerAvatarUrl,
+  } = repository;
+  return (
+    <View style={styles.container}>
+      <View style={styles.topContainer}>
+        <View style={styles.avatarContainer}>
+          <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
         </View>
-        <View style={styles.flexItemB}>
-          <Text fontWeight='bold'>{item.fullName}</Text>
-          <Text color='textSecondary'>{item.description}</Text>
-          <Text fontWeight='bold' style={styles.repoLanguage}>
-            {item.language}
+        <View style={styles.contentContainer}>
+          <Text
+            testID='repositoryName'
+            style={styles.nameText}
+            fontWeight='bold'
+            fontSize='subheading'
+            numberOfLines={1}
+          >
+            {fullName}
           </Text>
+          <Text
+            testID='repositoryDescription'
+            style={styles.descriptionText}
+            color='textSecondary'
+          >
+            {description}
+          </Text>
+          {language ? (
+            <View style={styles.languageContainer}>
+              <Text testID='repositoryLanguage' style={styles.languageText}>
+                {language}
+              </Text>
+            </View>
+          ) : null}
         </View>
       </View>
-
-      <View style={styles.flexContainer}>
-        <View style={styles.repoStats}>
-          <Text fontWeight='bold'>{kFormatter(item.stargazersCount)}</Text>
-          <Text color='textSecondary'>Stars</Text>
-        </View>
-        <View style={styles.repoStats}>
-          <Text fontWeight='bold'>{kFormatter(item.forksCount)}</Text>
-          <Text color='textSecondary'>Forks</Text>
-        </View>
-        <View style={styles.repoStats}>
-          <Text fontWeight='bold'>{kFormatter(item.reviewCount)}</Text>
-          <Text color='textSecondary'>Reviews</Text>
-        </View>
-        <View style={styles.repoStats}>
-          <Text fontWeight='bold'>{kFormatter(item.ratingAverage)}</Text>
-          <Text color='textSecondary'>Rating</Text>
-        </View>
+      <View style={styles.bottomContainer}>
+        <CountItem count={stargazersCount} label='Stars' />
+        <CountItem count={forksCount} label='Forks' />
+        <CountItem count={reviewCount} label='Reviews' />
+        <CountItem count={ratingAverage} label='Rating' />
       </View>
     </View>
   );

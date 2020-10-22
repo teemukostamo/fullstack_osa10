@@ -1,36 +1,32 @@
-import React from 'react';
-import { View, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import FormikTextInput from './FormikTextInput';
+import React from "react";
+import { View, Text, TouchableWithoutFeedback, StyleSheet } from "react-native";
+import FormikTextInput from "./FormikTextInput";
+import Button from "./Button";
 
 const styles = StyleSheet.create({
-  txtBtn: {
-    backgroundColor: '#0366d6',
-    padding: 14,
-    color: 'white',
-    textAlign: 'center',
-    margin: 1,
-    borderRadius: 5,
-    fontWeight: 'bold',
-  }
+  container: {
+    backgroundColor: "white",
+    padding: 15,
+  },
+  fieldContainer: {
+    marginBottom: 15,
+  },
 });
 
 const SignInForm = ({ onSubmit }) => {
   return (
-    <View style={{ backgroundColor: 'white' }}>
-      <FormikTextInput
-        name='username'
-        placeholder=' Username'
-      />
-      <FormikTextInput
-        name='password'
-        placeholder=' Password'
-        secureTextEntry
-      />
-      <TouchableWithoutFeedback onPress={onSubmit}>
-        <View>
-          <Text style={styles.txtBtn}>Sign in</Text>
-        </View>
-      </TouchableWithoutFeedback>
+    <View style={styles.container}>
+      <View style={styles.fieldContainer}>
+        <FormikTextInput name='username' placeholder=' Username' />
+      </View>
+      <View style={styles.fieldContainer}>
+        <FormikTextInput
+          name='password'
+          placeholder=' Password'
+          secureTextEntry
+        />
+      </View>
+      <Button onPress={onSubmit}>Sign in</Button>
     </View>
   );
 };

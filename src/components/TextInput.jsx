@@ -1,35 +1,29 @@
 import React from "react";
 import { TextInput as NativeTextInput, StyleSheet } from "react-native";
 
+import theme from "../theme";
+
 const styles = StyleSheet.create({
   textInput: {
-    margin: 4,
-    height: 50,
-    paddingLeft: 6,
-    borderColor: "gray",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderWidth: 1,
-    borderRadius: 5,
+    borderStyle: "solid",
+    fontSize: theme.fontSizes.body,
+    fontFamily: theme.fonts.main,
+    color: theme.colors.textPrimary,
+    borderRadius: theme.roundness,
+    borderColor: "#aab2bb",
+  },
+  error: {
+    borderColor: theme.colors.error,
   },
 });
 
-const errorStyles = StyleSheet.create({
-  textInput: {
-    height: 50,
-    margin: 4,
-    paddingLeft: 6,
-    borderColor: "red",
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-});
+const TextInput = ({ style, error, ...props }) => {
+  const textInputStyle = [styles.textInput, error && styles.error, style];
 
-const TextInput = ({ error, ...props }) => {
-  // const textInputStyle = [style];
-  // console.log(textInputStyle);
-
-  let finalStyle = error ? errorStyles.textInput : styles.textInput;
-
-  return <NativeTextInput value={props.value} style={finalStyle} {...props} />;
+  return <NativeTextInput style={textInputStyle} {...props} />;
 };
 
 export default TextInput;
