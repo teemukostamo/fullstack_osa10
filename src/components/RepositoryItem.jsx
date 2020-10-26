@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useHistory } from "react-router-native";
 import Text from "./Text";
 import theme from "../theme";
 import formatInThousands from "../utils/formatInThousands";
@@ -75,7 +76,9 @@ const CountItem = ({ label, count }) => {
 };
 
 const RepositoryItem = ({ repository }) => {
+  const history = useHistory();
   const {
+    id,
     fullName,
     description,
     language,
@@ -85,45 +88,53 @@ const RepositoryItem = ({ repository }) => {
     reviewCount,
     ownerAvatarUrl,
   } = repository;
+
+  const repositoryPress = () => {
+    console.log("klikd repository", id);
+    history.push(`/${id}`);
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <View style={styles.avatarContainer}>
-          <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+    <TouchableOpacity onPress={repositoryPress}>
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
+          <View style={styles.avatarContainer}>
+            <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+          </View>
+          <View style={styles.contentContainer}>
+            <Text
+              testID='repositoryName'
+              style={styles.nameText}
+              fontWeight='bold'
+              fontSize='subheading'
+              numberOfLines={1}
+            >
+              {fullName}
+            </Text>
+            <Text
+              testID='repositoryDescription'
+              style={styles.descriptionText}
+              color='textSecondary'
+            >
+              {description}
+            </Text>
+            {language ? (
+              <View style={styles.languageContainer}>
+                <Text testID='repositoryLanguage' style={styles.languageText}>
+                  {language}
+                </Text>
+              </View>
+            ) : null}
+          </View>
         </View>
-        <View style={styles.contentContainer}>
-          <Text
-            testID='repositoryName'
-            style={styles.nameText}
-            fontWeight='bold'
-            fontSize='subheading'
-            numberOfLines={1}
-          >
-            {fullName}
-          </Text>
-          <Text
-            testID='repositoryDescription'
-            style={styles.descriptionText}
-            color='textSecondary'
-          >
-            {description}
-          </Text>
-          {language ? (
-            <View style={styles.languageContainer}>
-              <Text testID='repositoryLanguage' style={styles.languageText}>
-                {language}
-              </Text>
-            </View>
-          ) : null}
+        <View style={styles.bottomContainer}>
+          <CountItem count={stargazersCount} label='Stars' />
+          <CountItem count={forksCount} label='Forks' />
+          <CountItem count={reviewCount} label='Reviews' />
+          <CountItem count={ratingAverage} label='Rating' />
         </View>
       </View>
-      <View style={styles.bottomContainer}>
-        <CountItem count={stargazersCount} label='Stars' />
-        <CountItem count={forksCount} label='Forks' />
-        <CountItem count={reviewCount} label='Reviews' />
-        <CountItem count={ratingAverage} label='Rating' />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

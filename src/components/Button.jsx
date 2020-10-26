@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ children, style, ...props }) => {
+const Button = ({ children, style, testID, ...props }) => {
   const buttonStyle = [styles.container, style];
 
   return (
     <TouchableWithoutFeedback {...props}>
       <View style={buttonStyle}>
-        <Text style={styles.text} fontWeight='bold'>
+        <Text testID={testID} style={styles.text} fontWeight='bold'>
           {children}
         </Text>
       </View>

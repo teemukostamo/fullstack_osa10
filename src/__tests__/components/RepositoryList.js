@@ -50,11 +50,9 @@ describe("RepositoryList", () => {
 
       // Add your test code here
 
-      const { debug, getAllByTestId } = render(
+      const { getAllByTestId } = render(
         <RepositoryListContainer repositories={repositories} />
       );
-
-      debug();
 
       const names = getAllByTestId("repositoryName");
       expect(names).toHaveLength(2);

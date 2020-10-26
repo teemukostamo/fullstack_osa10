@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableWithoutFeedback, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import FormikTextInput from "./FormikTextInput";
 import Button from "./Button";
 
@@ -17,16 +17,23 @@ const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
       <View style={styles.fieldContainer}>
-        <FormikTextInput name='username' placeholder=' Username' />
+        <FormikTextInput
+          testID='formikUsername'
+          name='username'
+          placeholder=' Username'
+        />
       </View>
       <View style={styles.fieldContainer}>
         <FormikTextInput
           name='password'
           placeholder=' Password'
           secureTextEntry
+          testID='formikPassword'
         />
       </View>
-      <Button onPress={onSubmit}>Sign in</Button>
+      <Button testID='formikSubmit' onPress={onSubmit}>
+        Sign in
+      </Button>
     </View>
   );
 };
