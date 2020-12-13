@@ -7,12 +7,16 @@ import {
   useParams,
   NativeRouter as Router,
 } from "react-router-native";
+import * as Linking from "expo-linking";
+
 import useRepository from "../hooks/useRepository";
+import useReviews from "../hooks/useReviews";
 
 import RepositoryList from "./RepositoryList";
 import RepositoryItem from "./RepositoryItem";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
+import Button from "./Button";
 
 import theme from "../theme";
 
@@ -30,10 +34,23 @@ const SingleRepository = () => {
     return <SignIn />;
   } else {
     const { repository } = useRepository(id);
+    const { reviews } = useReviews(id);
+    console.log("reviews from useReviews", reviews);
+    const openUrl = () => {
+      Linking.openURL(repository.url);
+    };
     if (!repository) {
       return null;
     }
-    return <RepositoryItem repository={repository} />;
+
+    return (
+      <View style={{ paddingBottom: 14, backgroundColor: "white" }}>
+        <RepositoryItem repository={repository} reviews={reviews} />
+        <Button onPress={openUrl} style={{ marginLeft: 10, marginRight: 10 }}>
+          Open In Github
+        </Button>
+      </View>
+    );
   }
 };
 

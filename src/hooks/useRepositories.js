@@ -9,6 +9,7 @@ const useRepositories = () => {
   const { error, loading } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
     onCompleted: (data) => {
+      console.log(data.repositories);
       setRepositories(data.repositories);
     },
   });

@@ -1,7 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { useHistory } from "react-router-native";
 import Text from "./Text";
+import ReviewItem from "./ReviewItem";
 import theme from "../theme";
 import formatInThousands from "../utils/formatInThousands";
 
@@ -75,7 +82,9 @@ const CountItem = ({ label, count }) => {
   );
 };
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, reviews }) => {
+  let reviewsData;
+  console.log("reviews at repositoryItem", reviews);
   const history = useHistory();
   const {
     id,
@@ -94,47 +103,64 @@ const RepositoryItem = ({ repository }) => {
     history.push(`/${id}`);
   };
 
+  const RepositoryInfo = () => {
+    return (
+      <TouchableOpacity onPress={repositoryPress}>
+        <View style={styles.container}>
+          <View style={styles.topContainer}>
+            <View style={styles.avatarContainer}>
+              <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+            </View>
+            <View style={styles.contentContainer}>
+              <Text
+                testID='repositoryName'
+                style={styles.nameText}
+                fontWeight='bold'
+                fontSize='subheading'
+                numberOfLines={1}
+              >
+                {fullName}
+              </Text>
+              <Text
+                testID='repositoryDescription'
+                style={styles.descriptionText}
+                color='textSecondary'
+              >
+                {description}
+              </Text>
+              {language ? (
+                <View style={styles.languageContainer}>
+                  <Text testID='repositoryLanguage' style={styles.languageText}>
+                    {language}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          </View>
+          <View style={styles.bottomContainer}>
+            <CountItem count={stargazersCount} label='Stars' />
+            <CountItem count={forksCount} label='Forks' />
+            <CountItem count={reviewCount} label='Reviews' />
+            <CountItem count={ratingAverage} label='Rating' />
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  if (!reviews) {
+    reviewsData = [];
+  } else {
+    reviewsData = reviews.edges;
+  }
+
   return (
-    <TouchableOpacity onPress={repositoryPress}>
-      <View style={styles.container}>
-        <View style={styles.topContainer}>
-          <View style={styles.avatarContainer}>
-            <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
-          </View>
-          <View style={styles.contentContainer}>
-            <Text
-              testID='repositoryName'
-              style={styles.nameText}
-              fontWeight='bold'
-              fontSize='subheading'
-              numberOfLines={1}
-            >
-              {fullName}
-            </Text>
-            <Text
-              testID='repositoryDescription'
-              style={styles.descriptionText}
-              color='textSecondary'
-            >
-              {description}
-            </Text>
-            {language ? (
-              <View style={styles.languageContainer}>
-                <Text testID='repositoryLanguage' style={styles.languageText}>
-                  {language}
-                </Text>
-              </View>
-            ) : null}
-          </View>
-        </View>
-        <View style={styles.bottomContainer}>
-          <CountItem count={stargazersCount} label='Stars' />
-          <CountItem count={forksCount} label='Forks' />
-          <CountItem count={reviewCount} label='Reviews' />
-          <CountItem count={ratingAverage} label='Rating' />
-        </View>
-      </View>
-    </TouchableOpacity>
+    <FlatList
+      data={reviewsData}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+    />
   );
 };
 
