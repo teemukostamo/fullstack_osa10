@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 });
 
 const ReviewItem = ({ review }) => {
-  console.log("review at reviewitem", review);
   return (
     <View key={review.node.id} style={styles.container}>
       <View style={styles.topContainer}>

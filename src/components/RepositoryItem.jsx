@@ -84,7 +84,6 @@ const CountItem = ({ label, count }) => {
 
 const RepositoryItem = ({ repository, reviews }) => {
   let reviewsData;
-  console.log("reviews at repositoryItem", reviews);
   const history = useHistory();
   const {
     id,
@@ -99,7 +98,6 @@ const RepositoryItem = ({ repository, reviews }) => {
   } = repository;
 
   const repositoryPress = () => {
-    console.log("klikd repository", id);
     history.push(`/${id}`);
   };
 
