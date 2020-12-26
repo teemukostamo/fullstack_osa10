@@ -16,6 +16,8 @@ import RepositoryList from "./RepositoryList";
 import RepositoryItem from "./RepositoryItem";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+
 import CreateReview from "./CreateReview";
 import Button from "./Button";
 
@@ -33,6 +35,8 @@ const SingleRepository = () => {
 
   if (id === "sign-in") {
     return <SignIn />;
+  } else if (id === "sign-up") {
+    return <SignUp />;
   } else {
     const { repository } = useRepository(id);
     const { reviews } = useReviews(id);
@@ -75,6 +79,10 @@ const Main = () => {
             <SignIn />
           </Route>
           <Redirect to='/' />
+
+          <Route path='/sign-up' exact>
+            <SignUp />
+          </Route>
         </Switch>
       </Router>
     </View>
