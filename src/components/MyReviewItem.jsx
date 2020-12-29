@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ReviewItem = ({ review }) => {
+const MyReviewItem = ({ review }) => {
   return (
     <View key={review.node.id} style={styles.container}>
       <View style={styles.topContainer}>
@@ -60,7 +60,7 @@ const ReviewItem = ({ review }) => {
             fontSize='subheading'
             numberOfLines={1}
           >
-            {review.node.user.username}
+            {review.node.repository.name}/{review.node.repository.ownerName}
           </Text>
           <Text
             testID='repositoryDescription'
@@ -77,4 +77,4 @@ const ReviewItem = ({ review }) => {
   );
 };
 
-export default ReviewItem;
+export default MyReviewItem;

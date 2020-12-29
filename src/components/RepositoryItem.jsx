@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import { useHistory } from "react-router-native";
+import { useHistory, useParams } from "react-router-native";
+import * as Linking from "expo-linking";
 import Text from "./Text";
+import Button from "./Button";
 import ReviewItem from "./ReviewItem";
 import theme from "../theme";
 import formatInThousands from "../utils/formatInThousands";
@@ -85,6 +87,8 @@ const CountItem = ({ label, count }) => {
 const RepositoryItem = ({ repository, reviews, onEndReach }) => {
   let reviewsData;
   const history = useHistory();
+  const params = useParams();
+
   const {
     id,
     fullName,
@@ -95,7 +99,25 @@ const RepositoryItem = ({ repository, reviews, onEndReach }) => {
     ratingAverage,
     reviewCount,
     ownerAvatarUrl,
+    url,
   } = repository;
+
+  const openUrl = () => {
+    Linking.openURL(url);
+  };
+
+  const githubLinkBtn = () => {
+    const githubBtn = params.id ? (
+      <Button
+        onPress={openUrl}
+        style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}
+      >
+        Open In Github
+      </Button>
+    ) : null;
+
+    return githubBtn;
+  };
 
   const repositoryPress = () => {
     history.push(`/${id}`);
@@ -141,6 +163,7 @@ const RepositoryItem = ({ repository, reviews, onEndReach }) => {
             <CountItem count={reviewCount} label='Reviews' />
             <CountItem count={ratingAverage} label='Rating' />
           </View>
+          {githubLinkBtn()}
         </View>
       </TouchableOpacity>
     );

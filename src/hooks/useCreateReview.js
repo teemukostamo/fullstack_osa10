@@ -9,11 +9,9 @@ const useCreateReview = () => {
       variables: { repositoryName, ownerName, rating, text },
     });
 
-    console.log("payload at usecreatereview", payload);
     return payload;
   };
 
-  console.log(payload);
   return [createReview, payload];
 };
 

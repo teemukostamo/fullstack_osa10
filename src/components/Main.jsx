@@ -7,7 +7,6 @@ import {
   useParams,
   NativeRouter as Router,
 } from "react-router-native";
-import * as Linking from "expo-linking";
 
 import useRepository from "../hooks/useRepository";
 import useReviews from "../hooks/useReviews";
@@ -17,9 +16,8 @@ import RepositoryItem from "./RepositoryItem";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-
 import CreateReview from "./CreateReview";
-import Button from "./Button";
+import MyReviews from "./MyReviews";
 
 import theme from "../theme";
 
@@ -30,6 +28,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
 });
+
 const SingleRepository = () => {
   let { id } = useParams();
 
@@ -45,9 +44,6 @@ const SingleRepository = () => {
       fetchMore();
     };
 
-    const openUrl = () => {
-      Linking.openURL(repository.url);
-    };
     if (!repository) {
       return null;
     }
@@ -60,9 +56,6 @@ const SingleRepository = () => {
           reviews={reviews}
           onEndReach={onEndReach}
         />
-        <Button onPress={openUrl} style={{ marginLeft: 10, marginRight: 10 }}>
-          Open In Github
-        </Button>
       </View>
     );
   }
@@ -79,6 +72,9 @@ const Main = () => {
           </Route>
           <Route path='/create-review' exact>
             <CreateReview />
+          </Route>
+          <Route path='/my-reviews' exact>
+            <MyReviews />
           </Route>
 
           <Route path='/:id'>

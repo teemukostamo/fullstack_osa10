@@ -39,7 +39,6 @@ export const CreateReviewContainer = ({ onSubmit }) => {
 const CreateReview = () => {
   const [createReview, payload] = useCreateReview();
   let history = useHistory();
-  console.log(payload);
 
   const onSubmit = async (values) => {
     const { repositoryName, ownerName, rating, text } = values;

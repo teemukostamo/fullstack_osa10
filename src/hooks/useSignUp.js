@@ -9,11 +9,9 @@ const useSignUp = () => {
       variables: { username, password },
     });
 
-    console.log("payload at usesignUp", payload);
     return payload;
   };
 
-  console.log(payload);
   return [signUp, payload];
 };
 

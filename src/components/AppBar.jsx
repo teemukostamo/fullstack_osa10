@@ -40,6 +40,7 @@ const AppBar = () => {
   const history = useHistory();
   const { data } = useQuery(AUTHORIZED_USER);
   const authorizedUser = data ? data.authorizedUser : undefined;
+  console.log(authorizedUser);
 
   const onSignOut = async () => {
     await authStorage.removeAccessToken();
@@ -51,6 +52,10 @@ const AppBar = () => {
     history.push("/create-review");
   };
 
+  const onMyReviews = () => {
+    history.push("/my-reviews");
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} horizontal>
@@ -60,6 +65,7 @@ const AppBar = () => {
         {authorizedUser ? (
           <>
             <AppBarTab onPress={onCreateReview}>Create Review</AppBarTab>
+            <AppBarTab onPress={onMyReviews}>My Reviews</AppBarTab>
             <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
           </>
         ) : (
