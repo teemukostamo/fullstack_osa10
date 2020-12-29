@@ -39,7 +39,12 @@ const SingleRepository = () => {
     return <SignUp />;
   } else {
     const { repository } = useRepository(id);
-    const { reviews } = useReviews(id);
+    const { reviews, fetchMore } = useReviews(id);
+
+    const onEndReach = () => {
+      fetchMore();
+    };
+
     const openUrl = () => {
       Linking.openURL(repository.url);
     };
@@ -49,7 +54,12 @@ const SingleRepository = () => {
 
     return (
       <View style={{ paddingBottom: 14, backgroundColor: "white" }}>
-        <RepositoryItem repository={repository} reviews={reviews} />
+        <RepositoryItem
+          key={repository.id}
+          repository={repository}
+          reviews={reviews}
+          onEndReach={onEndReach}
+        />
         <Button onPress={openUrl} style={{ marginLeft: 10, marginRight: 10 }}>
           Open In Github
         </Button>

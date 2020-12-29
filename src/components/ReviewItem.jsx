@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderRadius: 20,
     borderColor: "blue",
-    color: "blue",
+    // color: "blue",
     borderWidth: 2,
     alignItems: "center",
   },

@@ -32,6 +32,13 @@ export const GET_REPOSITORIES = gql`
           reviewCount
           stargazersCount
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        totalCount
+        hasNextPage
       }
     }
   }
@@ -58,11 +65,11 @@ export const GET_REPOSITORY = gql`
 `;
 
 export const GET_REVIEWS = gql`
-  query repository($id: ID!) {
+  query repository($id: ID!, $after: String, $first: Int) {
     repository(id: $id) {
       id
       fullName
-      reviews {
+      reviews(after: $after, first: $first) {
         edges {
           node {
             id
@@ -74,6 +81,13 @@ export const GET_REVIEWS = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          totalCount
+          hasNextPage
         }
       }
     }

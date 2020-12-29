@@ -6,6 +6,33 @@ import { useDebounce } from "use-debounce";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    margin: 5,
+    backgroundColor: "white",
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    margin: 5,
+    backgroundColor: "white",
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
+
 const styles = StyleSheet.create({
   separator: {
     height: 10,
@@ -17,7 +44,7 @@ const FilterText = ({ setFilterText }) => {
     <TextInput
       onChangeText={(text) => setFilterText(text)}
       placeholder='Filter repositories...'
-      style={{ margin: 1 }}
+      style={{ margin: 5, backgroundColor: "white" }}
     />
   );
 };
@@ -25,9 +52,10 @@ const FilterText = ({ setFilterText }) => {
 const Dropdown = ({ setSortBy }) => {
   return (
     <RNPickerSelect
+      style={{ ...pickerSelectStyles }}
       placeholder={{
         label: "Sort repositories...",
-        value: null,
+        value: "",
       }}
       onValueChange={(value) => setSortBy(value)}
       items={[
@@ -35,7 +63,11 @@ const Dropdown = ({ setSortBy }) => {
         { label: "Highest rated repositories", value: "DESC" },
         { label: "Lowest rated repositories", value: "ASC" },
       ]}
-      style={{ margin: 1 }}
+      // style={
+      //   Platform.OS === "ios"
+      //     ? pickerSelectStyles.inputIOS
+      //     : pickerSelectStyles.inputAndroid
+      // }
     />
   );
 };
@@ -54,6 +86,7 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
+    const onEndReach = this.props.onEndReach;
     const repositories = this.props.repositories;
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -67,6 +100,8 @@ export class RepositoryListContainer extends React.Component {
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => <RepositoryItem repository={item} />}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -77,13 +112,18 @@ const RepositoryList = () => {
   const [filterText, setFilterText] = useState("");
   const [filterTextValue] = useDebounce(filterText, 500);
 
-  const { repositories } = useRepositories(sortBy, filterTextValue);
+  const { repositories, fetchMore } = useRepositories(sortBy, filterTextValue);
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
       repositories={repositories}
       setSortBy={setSortBy}
       setFilterText={setFilterText}
+      onEndReach={onEndReach}
     />
   );
 };

@@ -82,7 +82,7 @@ const CountItem = ({ label, count }) => {
   );
 };
 
-const RepositoryItem = ({ repository, reviews }) => {
+const RepositoryItem = ({ repository, reviews, onEndReach }) => {
   let reviewsData;
   const history = useHistory();
   const {
@@ -156,8 +156,10 @@ const RepositoryItem = ({ repository, reviews }) => {
     <FlatList
       data={reviewsData}
       renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
+      keyExtractor={(item) => item.node.id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
