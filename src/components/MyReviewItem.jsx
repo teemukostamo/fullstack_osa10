@@ -1,7 +1,10 @@
 import React from "react";
 import { format } from "date-fns";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { useHistory } from "react-router-native";
+import useDeleteReview from "../hooks/useDeleteReview";
 import Text from "./Text";
+import Button from "./Button";
 
 import theme from "../theme";
 
@@ -42,9 +45,42 @@ const styles = StyleSheet.create({
   descriptionText: {
     flexGrow: 1,
   },
+  deleteButton: {
+    backgroundColor: theme.colors.error,
+  },
+  viewButton: {
+    backgroundColor: theme.colors.primary,
+  },
 });
 
-const MyReviewItem = ({ review }) => {
+const MyReviewItem = ({ review, refetch }) => {
+  const history = useHistory();
+  const [deleteReview] = useDeleteReview();
+
+  const handleViewPress = () => {
+    history.push(`/${review.node.repository.id}`);
+  };
+
+  const deleteAndRefetch = () => {
+    deleteReview(review.node.id);
+    refetch();
+  };
+
+  const handleDeletePress = () => {
+    Alert.alert(
+      "Delete review",
+      "Are you sure you want to delete this review?",
+      [
+        {
+          text: "CANCEL",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "DELETE", onPress: () => deleteAndRefetch() },
+      ],
+      { cancelable: false }
+    );
+  };
   return (
     <View key={review.node.id} style={styles.container}>
       <View style={styles.topContainer}>
@@ -72,7 +108,14 @@ const MyReviewItem = ({ review }) => {
           <Text style={{ marginTop: 5 }}>{review.node.text}</Text>
         </View>
       </View>
-      <View style={styles.bottomContainer}></View>
+      <View style={styles.bottomContainer}>
+        <Button onPress={handleViewPress} style={styles.viewButton}>
+          View repository
+        </Button>
+        <Button onPress={handleDeletePress} style={styles.deleteButton}>
+          Delete review
+        </Button>
+      </View>
     </View>
   );
 };

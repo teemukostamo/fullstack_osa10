@@ -108,6 +108,7 @@ export const AUTHORIZED_USER = gql`
             repository {
               name
               ownerName
+              id
             }
             createdAt
             user {

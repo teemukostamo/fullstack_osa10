@@ -5,7 +5,7 @@ import { FlatList } from "react-native";
 import MyReviewItem from "./MyReviewItem";
 
 const MyReviews = () => {
-  const { data } = useQuery(AUTHORIZED_USER, {
+  const { data, refetch } = useQuery(AUTHORIZED_USER, {
     variables: {
       includeReviews: true,
     },
@@ -23,7 +23,9 @@ const MyReviews = () => {
   return (
     <FlatList
       data={reviewsData}
-      renderItem={({ item }) => <MyReviewItem review={item} />}
+      renderItem={({ item }) => (
+        <MyReviewItem refetch={refetch} review={item} />
+      )}
       keyExtractor={(item) => item.node.id}
     />
   );

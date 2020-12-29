@@ -40,7 +40,6 @@ const AppBar = () => {
   const history = useHistory();
   const { data } = useQuery(AUTHORIZED_USER);
   const authorizedUser = data ? data.authorizedUser : undefined;
-  console.log(authorizedUser);
 
   const onSignOut = async () => {
     await authStorage.removeAccessToken();
